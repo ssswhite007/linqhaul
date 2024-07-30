@@ -1,0 +1,46 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main # Change to your desired branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.19
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRIVATEKEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan richdoor.sakura.ne.jp >> ~/.ssh/known_hosts
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATEKEY }}
+
+      - name: Deploy Build to Server
+        run: |
+          # Copy the build artifacts to the server using SCP
+          scp -r ./dist/* root@richdoor.sakura.ne.jp:/var/www/schrankdesign.net
+        continue-on-error: false
+
+      - name: Clean up
+        if: always()
+        run: |
+          # Remove the private key to ensure it's not left on the runner
+          rm -f ~/.ssh/id_rsa
