@@ -9,9 +9,10 @@ const Model = ({ url }) => {
 
   useEffect(() => {
     if (actions) {
-      // Play the first animation
-      const action = actions[Object.keys(actions)[0]];
-      action.play();
+      // Loop through all available actions and play each one
+      Object.values(actions).forEach(action => {
+        action.play();
+      });
     }
   }, [actions]);
 
