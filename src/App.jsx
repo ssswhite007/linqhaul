@@ -1,8 +1,9 @@
 // App.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment, Stats } from '@react-three/drei';
 import Model from './components/Model';
+import Card from './components/Card';
 import './index.css';
 
 // Custom hook to set the camera position and angle
@@ -33,14 +34,18 @@ function SetCameraPosition() {
     camera.updateProjectionMatrix();
 
     // Optionally log the camera position and orientation for debugging
-    console.log('Camera position:', camera.position);
-    console.log('Camera up vector:', camera.up);
+    // console.log('Camera position:', camera.position);
+    // console.log('Camera up vector:', camera.up);
   }, [camera]);
 
   return null; // This component does not render anything
 }
 
 function App() {
+  const [hovered, setHovered] = useState(false);
+  const [cardContent, setCardContent] = useState('')
+  const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
+
   return (
     <div style={{ width: '100vw', height: '100vh' }} className="w-full h-full overflow-hidden">
       <Canvas shadows>
@@ -72,7 +77,12 @@ function App() {
         <Environment preset="sunset" background />
 
         {/* The model with animations */}
-        <Model url="/model/Linqhaul_MuhammadExport.glb" />
+        <Model 
+          url="/model/Linqhaul_MuhammadExport.glb" 
+          setHovered={setHovered}
+          setCardContent={setCardContent}
+          setCardPosition={setCardPosition}
+        />
 
         {/* Orbit controls with constraints */}
         <OrbitControls
@@ -91,6 +101,7 @@ function App() {
         {/* Stats for performance monitoring (optional) */}
         <Stats />
       </Canvas>
+      <Card visible={hovered} position={cardPosition} content={cardContent} />
     </div>
   );
 }
