@@ -77,6 +77,7 @@ const Card = ({ visible, position, content }) => {
         setCardVisible(true);
         return;
       }
+    //   console.log(content)
       setCardVisible(false);
     } else {
       setCardVisible(false);

@@ -1,4 +1,3 @@
-// App.js
 import React, { useEffect, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment, Stats } from '@react-three/drei';
@@ -7,78 +6,40 @@ import Card from './components/Card';
 import MainCard from './components/MainCard';
 import './index.css';
 import Config from './components/Config/Config';
-const mainCardData = {
-  pulse: {
-    image: "/images/mainCard/pulse.png",
-    title: "PULSE",
-    description: "Enhance the productivity of your mining operations by leveraging our Pulse Module. "
-  },
-  cortex: {
-    image: "/images/mainCard/cortex.png",
-    title: "CORTEX",
-    description: "Cortex revolutionizes logistics with Road Digitalization: AI-powered, RPA-driven, and quasi-blockchain enabled."
-  },
-  vision: {
-    image: "/images/mainCard/vision.png",
-    title: "VISION",
-    description: "VISION lets you have complete vision and control over your dedicate as well and market fleet.                           "
-  },
-  iris: {
-    image: "/images/mainCard/iris.png",
-    title: "IRIS",
-    description: "IRIS offers comprehensive features such as real-time management & tracking of railway rakes. "
-  }
-}
-// Custom hook to set the camera position and angle
+
 function SetCameraPosition() {
   const { camera } = useThree();
 
   useEffect(() => {
-    // Calculate the camera position based on a 30-degree angle
-    const distance = 80; // Adjust distance from the origin
-    const angle = 30; // Angle in degrees
-    const radians = (angle * Math.PI) / 180; // Convert angle to radians
+    const distance = 80;
+    const angle = 30;
+    const radians = (angle * Math.PI) / 180;
 
-    // Set camera position
     camera.position.set(
       distance * Math.cos(radians),
       distance * Math.sin(radians),
-      100 // Adjust the z position as needed
+      100
     );
 
-    // Ensure the camera is looking at the origin (or another target)
     camera.lookAt(0, 0, 0);
-
-    // Optionally set the up vector to control the camera's orientation
-    camera.up.set(0, 1, 0); // Ensures the "up" direction is along the Y-axis
-
-    // Adjust the camera's field of view
+    camera.up.set(0, 1, 0);
     camera.fov = 50;
     camera.updateProjectionMatrix();
-
-    // Optionally log the camera position and orientation for debugging
-    // console.log('Camera position:', camera.position);
-    // console.log('Camera up vector:', camera.up);
   }, [camera]);
 
-  return null; // This component does not render anything
+  return null;
 }
 
 function App() {
   const [hovered, setHovered] = useState(false);
-  const [cardContent, setCardContent] = useState('')
+  const [cardContent, setCardContent] = useState('');
   const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
 
   return (
     <div style={{ width: '100vw', height: '100vh' }} className="w-full h-full overflow-hidden">
       <Canvas shadows>
-        {/* Set the initial camera position and angle */}
         <SetCameraPosition />
-
-        {/* Ambient light to softly illuminate the scene */}
         <ambientLight intensity={0.7} />
-
-        {/* Directional light to cast realistic shadows */}
         <directionalLight
           castShadow
           position={[10, 10, 10]}
@@ -92,36 +53,23 @@ function App() {
           shadow-camera-top={50}
           shadow-camera-bottom={-50}
         />
-
-        {/* Point light for additional lighting effects */}
         <pointLight position={[-10, 10, -10]} intensity={1} />
-
-        {/* Environment for reflection and lighting effects */}
         <Environment preset="sunset" background />
-
-        {/* The model with animations */}
         <Model 
           url="/model/Linqhaul_MuhammadExport.glb" 
           setHovered={setHovered}
           setCardContent={setCardContent}
           setCardPosition={setCardPosition}
         />
-
-        {/* Orbit controls with constraints */}
         <OrbitControls
-          // enablePan={true}
           enableZoom={true}
-          minPolarAngle={0.1} // Prevent camera from going below the floor
-          maxPolarAngle={Math.PI / 2-0.1}
+          minPolarAngle={0.1}
+          maxPolarAngle={Math.PI / 2 - 0.1}
           maxAzimuthAngle={Math.PI / 2}
           minAzimuthAngle={-Math.PI / 2}
-          // enableDamping={false}
-          // makeDefault
-          // minDistance={3}
-          // maxDistance={10}
+          minDistance={30} // Set minimum zoom distance
+          maxDistance={150} // Set maximum zoom distance
         />
-
-        {/* Stats for performance monitoring (optional) */}
         <Stats />
       </Canvas>
       <Card visible={hovered} position={cardPosition} content={cardContent} />
@@ -139,6 +87,8 @@ function App() {
           description={Config.cortex.description}
           module={Config.cortex.module}
           benefits={Config.cortex.benefits}
+          onMouseEnter={() => console.log("here")}
+          onClick={() => console.log("here")}
         />
         <MainCard 
           image={Config.vision.image}
