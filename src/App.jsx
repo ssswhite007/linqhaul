@@ -125,7 +125,7 @@ function App() {
         <Stats />
       </Canvas>
       <Card visible={hovered} position={cardPosition} content={cardContent} />
-      <div className='absolute bottom-2 right-2 bg-white flex bg-transparent gap-4'>
+      <div className='absolute bottom-2 right-2 flex bg-transparent gap-4'>
         <MainCard 
           image={Config.pulse.image}
           title={Config.pulse.title}
