@@ -4,8 +4,31 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment, Stats } from '@react-three/drei';
 import Model from './components/Model';
 import Card from './components/Card';
+import MainCard from './components/MainCard';
 import './index.css';
-
+import Config from './components/Config/Config';
+const mainCardData = {
+  pulse: {
+    image: "/images/mainCard/pulse.png",
+    title: "PULSE",
+    description: "Enhance the productivity of your mining operations by leveraging our Pulse Module. "
+  },
+  cortex: {
+    image: "/images/mainCard/cortex.png",
+    title: "CORTEX",
+    description: "Cortex revolutionizes logistics with Road Digitalization: AI-powered, RPA-driven, and quasi-blockchain enabled."
+  },
+  vision: {
+    image: "/images/mainCard/vision.png",
+    title: "VISION",
+    description: "VISION lets you have complete vision and control over your dedicate as well and market fleet.                           "
+  },
+  iris: {
+    image: "/images/mainCard/iris.png",
+    title: "IRIS",
+    description: "IRIS offers comprehensive features such as real-time management & tracking of railway rakes. "
+  }
+}
 // Custom hook to set the camera position and angle
 function SetCameraPosition() {
   const { camera } = useThree();
@@ -102,6 +125,36 @@ function App() {
         <Stats />
       </Canvas>
       <Card visible={hovered} position={cardPosition} content={cardContent} />
+      <div className='absolute bottom-2 right-2 bg-white flex bg-transparent gap-4'>
+        <MainCard 
+          image={Config.pulse.image}
+          title={Config.pulse.title}
+          description={Config.pulse.description}
+          module={Config.pulse.module}
+          benefits={Config.pulse.benefits}
+        />
+        <MainCard 
+          image={Config.cortex.image}
+          title={Config.cortex.title}
+          description={Config.cortex.description}
+          module={Config.cortex.module}
+          benefits={Config.cortex.benefits}
+        />
+        <MainCard 
+          image={Config.vision.image}
+          title={Config.vision.title}
+          description={Config.vision.description}
+          module={Config.vision.module}
+          benefits={Config.vision.benefits}
+        />
+        <MainCard 
+          image={Config.iris.image}
+          title={Config.iris.title}
+          description={Config.iris.description}
+          module={Config.iris.module}
+          benefits={Config.iris.benefits}
+        />
+      </div>
     </div>
   );
 }
