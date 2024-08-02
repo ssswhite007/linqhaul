@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import CardTooltip from "./Config/CardTooltip";
 const MainCard = ({ image, title, description, module, benefits }) => {
   return (
     <div
@@ -26,24 +26,24 @@ const MainCard = ({ image, title, description, module, benefits }) => {
 
       <div className="font-bold text-[#00FFF1] text-[14px] mb-3">Key Modules:</div>
       <div className="grid grid-cols-4 m-auto gap-2 border-b pb-2 border-b-[#00FFF1] mb-2">
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center text-center tooltip">
             <div className="flex items-center"><img src={module[0].image} className="w-[50x] h-[50px]"/></div>
-            {/* <h3 className="text-lg font-semibold">{module[0].title}</h3> */}
+            <CardTooltip title={module[0].title}/>
         </div>
 
         <div className="flex flex-col items-center text-center">
             <div className="flex items-center"><img src={module[1].image} /></div>
-            {/* <h3 className="text-lg font-semibold">{module[0].title}</h3> */}
+            
         </div>
 
         <div className="flex flex-col items-center text-center">
             <div className="flex items-center"><img src={module[2].image} /></div>
-            {/* <h3 className="text-lg font-semibold">{module[0].title}</h3> */}
+            
         </div>
 
         <div className="flex flex-col items-center text-center">
             <div className="flex items-center"><img src={module[3].image} /></div>
-            {/* <h3 className="text-lg font-semibold">{module[0].title}</h3> */}
+            
         </div>
       </div>
 
