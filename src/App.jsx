@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
+import React, { useEffect, useState, Suspense } from 'react';
+import { Canvas, useThree, extend } from '@react-three/fiber';
 import { OrbitControls, Environment, Stats } from '@react-three/drei';
 import Model from './components/Model';
 import Card from './components/Card';
 import MainCard from './components/MainCard';
+import Preloader from './components/Preloader';
 import './index.css';
 import Config from './components/Config/Config';
+
+extend({ Preloader });
 
 function SetCameraPosition() {
   const { camera } = useThree();
@@ -14,7 +17,7 @@ function SetCameraPosition() {
     const distance = 80;
     const angle = 30;
     const radians = (angle * Math.PI) / 180;
-
+    // console.log(camera.position)
     camera.position.set(
       distance * Math.cos(radians),
       distance * Math.sin(radians),
@@ -29,16 +32,17 @@ function SetCameraPosition() {
 
   return null;
 }
-
+import { TailSpin, BallTriangle } from "react-loader-spinner";
 function App() {
   const [hovered, setHovered] = useState(false);
   const [cardContent, setCardContent] = useState('');
   const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
-
+  const [loader, setLoader] = useState(true);
   return (
-    <div style={{ width: '100vw', height: '100vh' }} className="w-full h-full overflow-hidden">
+    <div style={{ width: '100vw', height: '100vh' }} className="w-full h-full overflow-hidden bg-[#081427]">
       <Canvas shadows>
         <SetCameraPosition />
+        <Suspense fallback={<Preloader setLoader={setLoader} />}>
         <ambientLight intensity={0.7} />
         <directionalLight
           castShadow
@@ -69,42 +73,48 @@ function App() {
           minAzimuthAngle={-Math.PI / 2}
           minDistance={30} // Set minimum zoom distance
           maxDistance={150} // Set maximum zoom distance
+          enablePan={true}
+          dampingFactor={0.25} // Adjust for smoother or more responsive controls
+          panSpeed={0.5} // Adjust the speed of panning
+          screenSpacePanning={false} // Use world space for panning
         />
+        </Suspense>
         <Stats />
       </Canvas>
+
       <Card visible={hovered} position={cardPosition} content={cardContent} />
-      <div className='absolute bottom-2 right-2 flex bg-transparent gap-4'>
-        <MainCard 
-          image={Config.pulse.image}
-          title={Config.pulse.title}
-          description={Config.pulse.description}
-          module={Config.pulse.module}
-          benefits={Config.pulse.benefits}
-        />
-        <MainCard 
-          image={Config.cortex.image}
-          title={Config.cortex.title}
-          description={Config.cortex.description}
-          module={Config.cortex.module}
-          benefits={Config.cortex.benefits}
-          onMouseEnter={() => console.log("here")}
-          onClick={() => console.log("here")}
-        />
-        <MainCard 
-          image={Config.vision.image}
-          title={Config.vision.title}
-          description={Config.vision.description}
-          module={Config.vision.module}
-          benefits={Config.vision.benefits}
-        />
-        <MainCard 
-          image={Config.iris.image}
-          title={Config.iris.title}
-          description={Config.iris.description}
-          module={Config.iris.module}
-          benefits={Config.iris.benefits}
-        />
-      </div>
+      {!loader && (
+        <div className='absolute bottom-2 right-2 flex bg-transparent gap-4'>
+          <MainCard 
+            image={Config.pulse.image}
+            title={Config.pulse.title}
+            description={Config.pulse.description}
+            module={Config.pulse.module}
+            benefits={Config.pulse.benefits}
+          />
+          <MainCard 
+            image={Config.cortex.image}
+            title={Config.cortex.title}
+            description={Config.cortex.description}
+            module={Config.cortex.module}
+            benefits={Config.cortex.benefits}
+          />
+          <MainCard 
+            image={Config.vision.image}
+            title={Config.vision.title}
+            description={Config.vision.description}
+            module={Config.vision.module}
+            benefits={Config.vision.benefits}
+          />
+          <MainCard 
+            image={Config.iris.image}
+            title={Config.iris.title}
+            description={Config.iris.description}
+            module={Config.iris.module}
+            benefits={Config.iris.benefits}
+          />
+        </div>
+      )}
     </div>
   );
 }

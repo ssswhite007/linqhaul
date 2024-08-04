@@ -21,7 +21,6 @@ const Model = (props) => {
 
   useEffect(() => {
     const handleMouseMove = (event) => {
-      // Calculate mouse position in normalized device coordinates
       mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };

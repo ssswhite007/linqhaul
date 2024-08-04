@@ -53,9 +53,9 @@ const Card = ({ visible, position, content }) => {
       }
       if (
         content === "Cube170" ||
-        content === "Cube171_1" ||
-        content === "Cube171_2" ||
-        content === "Cube171_3"
+        content === "Cube170_1" ||
+        content === "Cube170_2" ||
+        content === "Cube170_3"
       ) {
         setTitle(Config.tareWeight.title);
         setImage(Config.tareWeight.image);
@@ -135,9 +135,9 @@ const Card = ({ visible, position, content }) => {
           <div className="w-[20px] h-[20px] rounded-[10px] bg-[#00FFF1] text-[15px] text-[#000000] font-bold flex justify-center items-center">
             {step}
           </div>
-          <div className="text-[#00FFF1] text-[15px]">{title}</div>
+          <div className="text-[#00FFF1] text-[18px]">{title}</div>
         </div>
-        <div className="pl-[30px]">{description}</div>
+        <div className="pl-[30px] leading-[20px]">{description}</div>
       </div>
     </div>
   );

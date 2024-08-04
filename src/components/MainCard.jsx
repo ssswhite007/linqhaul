@@ -1,76 +1,80 @@
-import React, { useEffect, useState } from "react";
-import CardTooltip from "./Config/CardTooltip";
-const MainCard = ({ image, title, description, module, benefits }) => {
-  return (
-    <div
-      className={"border border-[#00FFF1] w-[250px]"}
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.7)",
-        color: "white",
-        padding: "15px",
-        borderRadius: "5px",
-        pointerEvents: "none",
-      }}
-    >
-      <div className=" gap-2 flex">
-        <div className="w-[50px] h-[50px] rounded-[25px] bg-black flex items-center px-1 mb-1">
-          <img src={image} className="w-full" />
-        </div>
-        <div className="flex items-center font-bold text-[#00FFF1]">
-          {title}
-        </div>
+import React from 'react';
+import PropTypes from 'prop-types';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
+import { styled } from '@mui/material/styles';
+
+const CardTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} arrow classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.arrow}`]: {
+    color: 'rgba(0, 0, 0, 0.7)',
+  },
+  [`& .${tooltipClasses.tooltip}`]: {
+    color: 'white',
+    borderRadius: '4px',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    fontSize: '16px',
+  },
+}));
+
+const MainCard = ({ image, title, description, module, benefits }) => (
+  <div
+    className="border border-[#00FFF1] w-[250px] bg-black/70 text-white p-4 rounded-md"
+  >
+    <div className="flex gap-2 mb-2">
+      <div className="w-[50px] h-[50px] rounded-full bg-black flex items-center justify-center">
+        <img src={image} alt={title} className="w-full h-full object-cover rounded-full" />
       </div>
-      <div className="text-[12px] leading-[14px] mb-2">
-        {description}
-      </div>
-
-      <div className="font-bold text-[#00FFF1] text-[14px] mb-3">Key Modules:</div>
-      <div className="grid grid-cols-4 m-auto gap-2 border-b pb-2 border-b-[#00FFF1] mb-2">
-        <div className="flex flex-col items-center text-center tooltip">
-            <div className="flex items-center"><img src={module[0].image} className="w-[50x] h-[50px]"/></div>
-            <CardTooltip title={module[0].title}/>
-        </div>
-
-        <div className="flex flex-col items-center text-center">
-            <div className="flex items-center"><img src={module[1].image} /></div>
-            
-        </div>
-
-        <div className="flex flex-col items-center text-center">
-            <div className="flex items-center"><img src={module[2].image} /></div>
-            
-        </div>
-
-        <div className="flex flex-col items-center text-center">
-            <div className="flex items-center"><img src={module[3].image} /></div>
-            
-        </div>
-      </div>
-
-      <div className="font-bold text-[#00FFF1] text-[14px] mb-3">Benefits:</div>
-      <div className="grid grid-cols-4 m-auto gap-2 border-b pb-2 border-b-[#00FFF1]">
-        <div className="flex flex-col items-center text-center">
-            <div className="flex items-center"><img src={benefits[0].image} className="w-[50x] h-[50px]"/></div>
-            
-        </div>
-
-        <div className="flex flex-col items-center text-center">
-            <div className="flex items-center"><img src={benefits[1].image}  className="w-[50x] h-[50px]"/></div>
-            
-        </div>
-
-        <div className="flex flex-col items-center text-center">
-            <div className="flex items-center"><img src={benefits[2].image} className="w-[50x] h-[50px]" /></div>
-            
-        </div>
-
-        <div className="flex flex-col items-center text-center">
-            <div className="flex items-center"><img src={benefits[3].image} className="w-[50x] h-[50px]" /></div>
-            
-        </div>
+      <div className="flex items-center font-bold text-[#00FFF1]">
+        {title}
       </div>
     </div>
-  );
+    <div className="text-xs leading-[14px] mb-2">{description}</div>
+
+    <div className="font-bold text-[#00FFF1] text-sm mb-3">Key Modules:</div>
+    <div className="grid grid-cols-4 gap-2 mb-2 border-b pb-2 border-b-[#00FFF1]">
+      {module.map((mod, index) => (
+        <div key={index} className="flex flex-col items-center text-center">
+          <CardTooltip title={mod.title}>
+            <div className="flex items-center">
+              <img src={mod.image} alt={mod.title} className="w-[50px] h-[50px]" />
+            </div>
+          </CardTooltip>
+        </div>
+      ))}
+    </div>
+
+    <div className="font-bold text-[#00FFF1] text-sm mb-3">Benefits:</div>
+    <div className="grid grid-cols-4 gap-2">
+      {benefits.map((benefit, index) => (
+        <div key={index} className="flex flex-col items-center text-center">
+          <CardTooltip title={benefit.title}>
+            <div className="flex items-center">
+              <img src={benefit.image} alt={benefit.title} className="w-[50px] h-[50px]" />
+            </div>
+          </CardTooltip>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+MainCard.propTypes = {
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  module: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  benefits: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default MainCard;
